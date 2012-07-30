@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      video {
+        width: 200px;
+        height: 112px;
+        border: 1px solid black;
+      }
+      
+      .video-container {
+        display: inline-block;
+        text-align: center;
+      }
+      
+      p {
+        font: 14px Arial;
+      }
+    </style>
+    <script type="text/javascript">
+      var video = document.getElementById('video');
+      video.addEventListener('canplay', function(e) {
+          this.volume = 0.4;
+          this.currentTime = 10;
+          this.play();
+        }, false);
+
+      function showError(e) {
+        switch(e.target.error.code) {
+          case e.target.error.MEDIA_ERR_ABORTED: alert('Has abortado el playback');
+            break;
+          case e.target.error.MEDIA_ERR_NETWORK: alert('Error en la red.');
+            break;
+          case e.target.error.MEDIA_ERR_DECODE: alert('Problema de codificacion');
+            break;
+          case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED: alert('Formato no soportado o archivo no encontrado');
+            break;
+          default: alert('He ocurrido un error desconocido');
+            break;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="video-container">
+      <p>.mp4</p>
+      <video id='video' poster="http://www.html5rocks.com/en/tutorials/video/basics/star.png" onerror="showError(event)" controls>
+        <source src="CSS3_&_HTML5_Level_1.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+      </video>
+    </div>
+    </div>
+  </body>
+</html>​

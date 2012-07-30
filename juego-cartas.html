@@ -1,0 +1,179 @@
+
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript">
+    var cancho = 900;
+    var calto = 400;
+    var ctx;
+    var primeraeleccion = true;
+    var primeracarta;
+    var segundacarta;
+    var colordorso = "rgb(128,0,128)";
+    var frontbgcolor = "rgb(251,215,73)";
+    var colorpoli = "rgb(254,11,0)";
+    var colormesa = "rgb(255,255,255)";
+    var cardrad = 30;
+    var baraja = [];
+    var primersx = 30;
+    var primersy = 50;
+    var margen = 30;
+    var cartaancho = 4*cardrad;
+    var cartaalto = 4*cardrad;
+    var tid;
+    var coinciden;
+    var tiempoinicio;
+
+    function hacerBaraja() {
+      var i;
+      var acarta;
+      var bcarta;
+      var cx = primersx;
+      var cy = primersy;
+
+      for(i=3;i<9;i++){
+        acarta = new Carta(cx,cy,cartaancho,cartaalto,i);
+        baraja.push(acarta);
+        bcarta = new Carta(cx,cy+cartaalto+margen, cartaancho, cartaalto, i)
+        baraja.push(bcarta);
+        cx = cx+cartaancho+margen;
+        acarta.dibujar();
+        bcarta.dibujar();
+      }
+    }
+
+    function Policarta(sx,sy,rad,n){
+      this.sx = sx;
+      this.sy = sy;
+      this.rad = rad;
+      this.dibujar = dibujarpoli;
+      this.n = n;
+      this.angulo = (2*Math.PI)/n;
+      this.muevela = movgeneral;
+    }
+
+    function dibujarpoli(){
+      ctx.fillStyle= frontbgcolor;
+      ctx.strokeStyle = colordorso;
+      ctx.fillRect(this.sx-2*this.rad, this.sy-2*this.rad, 4*this.rad, 4*this.rad);
+      ctx.beginPath();
+      ctx.fillStyle = colorpoli;
+      var i;
+      var rad = this.rad;
+    }
+
+    function elige(ev){
+      var mx;
+      var my;
+      var eleccion1;
+      var eleccion2;
+
+      if (ev.layerX || ev.layerX == 0) { // Firefox
+        mx = ev.layerX;
+        my = ev.layerY;
+      } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+        mx = ev.offsetX;
+        my = ev.offsetY;
+      }
+
+      var i;
+      for (i=0;i<baraja.length;i++){
+        var carta = baraja[i];
+        if (carta.sx >= 0){
+          if ((mx>carta.sx) && (mx<carta.sx+carta.sancho) && (my>carta.sy) && (my<carta.sy+carta.salto)){
+            if((primeraeleccion) || (i!= primeracarta)) {
+              break;
+            }
+          }
+        }
+      }
+
+      if(i<baraja.length) { // pulsado en una carta
+        if(primeraeleccion) {
+          primeracarta = i;
+          primeraeleccion = false;
+
+          // crea poligono para dibujar
+          eleccion1= new Policarta(carta.sx+cartaancho*.5, carta.sy+cartaalto*.5, cardrad, carta.info);
+          eleccion1.dibujar();
+        } else {
+          segundacarta = i;
+          eleccion2 = new Policarta(carta.sx+cartaancho*.5, carta.sy+cartaalto*.5, cardrad, carta.info);
+          eleccion2.dibujar();
+
+          if (baraja[i].info==baraja[primeracarta].info) {
+            coinciden = true;
+            var nm = 1+Number(document.f.contador.value);
+            document.f.contador.value = String(nm);
+            if (nm >= baraja.length/2) {
+              var now = new Date();
+              var nt = Number(now.getTime());
+
+              var segundos = Math.floor(.5+(nt-tiempoinicio)/1000);
+              document.f.transcurrido.value = String(segundos);
+
+              // necesario para dar vuelta en la ultima coincidencia
+            }
+          } else {
+            coinciden = false;
+          }
+
+          primeraeleccion = true;
+          tid = setTimeout(darvuelta, 1000);
+        }
+      }
+    }
+
+    function barajar(){
+      var i;
+      var k;
+      var contenedor;
+      var d1 = baraja.length;
+      var nt;
+
+      for (nt=0;nt<3;nt++){{
+        i = Math.floor(Math.random()*d1);
+        k = Math.floor(Math.random()*d1);
+        contenedor = baraja[i].info;
+        baraja[i].info = baraja[k].info;
+        baraja[k].info = contenedor;
+      }}
+    }
+
+    function Carta(sx,sy,sancho,salto,info){
+      this.sx = sx;
+      this.sy = sy;
+      this.sancho = sancho;
+      this.salto = salto;
+      this.info = info;
+      this.dibujar = dibujardorso;
+    }
+
+    function init() {
+      ctx = document.getElementById('canvas').getContext('2d');
+      canvas1 = document.getElementById('canvas');
+      canvas1.addEventListener('click', elige, false);
+      hacerBaraja();
+      document.f.contador.value="0";
+      document.f.transcurrido.value ="";
+      tiempoinicio = new Date();
+      tiempoInicio = Number(tiempoinicio.getTime());
+      barajar();
+    }
+
+  </script>
+</head>
+<body onload="init();">
+  <canvas id="canvas" width="800" height="400">
+    TU navegador es una mierda
+  </canvas>
+  <br />
+  Pulsa en dos cartas para ver si coinciden
+  <form name="f">
+    Número de coincidencias: <input type="text" name="contador" value="0" size="1"/>
+    <p>
+      Tiempo tomado para completar el puzzle: <input type="text" name="transcurrido" value="" size="4"/> segundos
+    </p>
+  </form>
+</body>
+</html>

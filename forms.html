@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas tutorial</title>
+  <script type="text/javascript">
+    function check(input) {
+      if (input.value != document.getElementById('email_addr').value) {
+        input.setCustomValidity('The two email addresses must match.');
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+  </script>
+  <style type="text/css">
+    :invalid {
+      border: 2px solid #ff0000;
+    }
+  </style>
+</head>
+<body>
+  <form method="post" action="" oninput="total.value = (nights.valueAsNumber * 99) + 
+ ((guests.valueAsNumber - 1) * 10)">
+    <label>Full name:</label><br>
+    <input type="tezt" id="full_name" name="full_name" placeholder="Enter name"><br>
+
+    <label>Email address:</label><br>
+    <input type="email" id="email_addr" name="email_addr" required><br>
+
+    <label>Repeat email address:</label><br>
+    <input type="email" id="email_addr_repeat" name="email_addr_repeat" oninput="check(this)" required><br>
+
+    <label>Arrival Date:</label><br>
+    <input type="date" id="arrival_dt" name="arrival_dt" required/><br>
+
+    <label>Number of nights (rooms are $99.00 per night):</label><br>
+    <input type="number" id="nights" name="nights" value="1" min="1" max="30" required/><br>
+
+    <label>Number of guests (each additional guest adds $10.00 per night):</label><br>
+    <input type="number" id="guests" name="guests" value="1" min="1" max="4" required/><br>
+
+    <label>Estimated total:</label>
+    $<output id="total" name="total">99</output>.00
+    <br><br>
+
+    <label>Promo code:</label><br>
+    <input type="text" id="promo" name="promo" pattern="[A-Za-z0-9]{6}"
+    title="Promo codes of 6 alphanumeric characters"><br>
+
+    <input type="range" min="-100" max="100" value="0" step="10" name="power" list="powers"/>
+    <datalist id="powers">
+      <option value="0">
+      <option value="-30">
+      <option value="30">
+      <option value="+50">  
+    </datalist>
+
+    <input type="submit" value="Request Reservation" />
+  </form> 
+</body>
+</html>

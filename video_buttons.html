@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset='utf-8'>
+  <title>HTML5 Video</title>
+  <script type="text/javascript">
+    document._video = document.getElementById("video");
+  </script>
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: ghostWhite;">
+  <div class="content">
+    <div class="menu">
+      <div class="menu-item"><button class="btn" onclick="document._video.load()">Load</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.play()">Play</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.pause()">Pause</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.currentTime+=10">Current Time +10</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.currentTime-=10">Current Time -10</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.playbackRate+=1">Playback Rate +1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.playbackRate-=1">Playback Rate -1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.playbackRate+=0.1">Playback Rate +0.1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.playbackRate-=0.1">Playback Rate -0.1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.volume+=0.1">Volume +0.1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.volume-=0.1">Volume -0.1</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.muted=true">Muted = true</button></div>
+      <div class="menu-item"><button class="btn" onclick="document._video.muted=false">Muted = false</button></div>
+    </div>
+    <div class="main">
+      <video id='video'
+        controls preload='none' 
+        poster="new-super-mario-bros-2.jpg">
+        <source id='mp4'
+          src="New_Super_Mario_Bros_2_E3_Trailer.mp4"
+          type='video/mp4'>
+        <p>Your user agent does not support the HTML5 Video element.</p>
+      </video>
+    </div>
+  </div>
+  
+</body>
+</html>
